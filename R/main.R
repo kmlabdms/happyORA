@@ -22,7 +22,7 @@ col2 = c("#7296B9", "#98276C", "#e29357", "#d76a9a")
 col3 = c("#F8766D","#00BFC4")
 
 
-# CompleteGSEA output a plot and a table for overlapped genes.
+# happyORA output a plot and a table for overlapped genes.
 g1 = happyORA(comb1, colors = col1)
 g2 = happyORA(comb2, colors = col2)
 g3 = happyORA(comb3, colors = col3)
