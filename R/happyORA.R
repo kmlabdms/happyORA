@@ -54,13 +54,14 @@ happyORA <- function(query_input,
   gsea_result <- SimpleGSEA(query_input, genesets_selected,
                             background = background, p_cut = p_cut)
   tbl_overlap <- gsea_result$gses_genes
-  tbl_overlap$type <- factor(tbl_overlap$type, levels = unique(query_input$cluster))
-  group_labels = unique(query_input$cluster)
+  tbl_overlap$type <- factor(tbl_overlap$type,
+                             levels = str_sort(unique(query_input$cluster), numeric = T))
+  group_labels = str_sort(unique(query_input$cluster), numeric = T)
   ht = GetOncoplotGSEA(tbl_overlap,
                        tbl_spl =  geneset_type,
                        group_colors = colors,
                        group_labels =  group_labels,
-                       show_column_names= F,
+                       show_column_names= T,
                        name = sprintf("p<%s", p_cut)
                        )
   ht = draw(ht, heatmap_legend_side = "bottom")
