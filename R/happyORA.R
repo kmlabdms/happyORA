@@ -18,16 +18,23 @@ happyORA <- function(query_input,
                          remove_genesets_group = NULL,
                          keep_genesets_group = NULL,
                          background = NULL,
-                         p_cut = 0.05
+                         p_cut = 0.05,
+                     group_labels = NULL,
+                     visual_query_as_row = F
                          ){
 
+  # for testing only
+  # remove_genesets_group = NULL
+  # keep_genesets_group = NULL
+  # background = NULL
+  # p_cut = 0.05
 
   if (is.null(background)) {
     background <- gene_gw
   }
 
-  if (length(unique( query_input[[1]])) > length(colors)) {
-    colors = rep(colors[1], length(unique( query_input[[1]])))
+  if (length(unique(group_labels)) > length(colors)) {
+    colors = rep(colors[1], length(group_labels))
   }
 
   # database Prep -----------------------------------------------------------
@@ -44,7 +51,7 @@ happyORA <- function(query_input,
   genesets_group_selected = names(group_list)
   if (!is.null(remove_genesets_group)) {
     genesets_group_selected <-
-      genesets_group_selected[genesets_group_selected != remove_genesets_group]
+      genesets_group_selected[!genesets_group_selected %in% remove_genesets_group]
   }
   if (!is.null(keep_genesets_group)) {
     genesets_group_selected = keep_genesets_group
@@ -61,15 +68,29 @@ happyORA <- function(query_input,
   tbl_overlap <- gsea_result$gses_genes
   tbl_overlap$type <- factor(tbl_overlap$type,
                              levels = str_sort(unique(query_input$cluster), numeric = T))
-  group_labels = str_sort(unique(query_input$cluster), numeric = T)
-  ht = GetOncoplotGSEA(tbl_overlap = tbl_overlap,
-                       tbl_spl =  geneset_type,
-                       group_colors = colors,
-                       group_labels =  group_labels,
-                       show_column_names= T,
-                       name = sprintf("p<%s", p_cut)
+  if (is.null(group_labels)) {
+    group_labels = str_sort(unique(query_input$cluster), numeric = T)
+  }
+  ht = GetOncoplotGSEA_Bi(
+    tbl_overlap = tbl_overlap,
+    tbl_spl =  geneset_type,
+    group_colors = colors,
+    group_labels =  group_labels,
+    show_column_names= T,
+    visual_query_as_row = visual_query_as_row,
+    name = sprintf("p<%s", p_cut)
                        )
-  ht = draw(ht, heatmap_legend_side = "bottom")
 
   return(list(plot = ht, tbl = tbl_overlap))
 }
+
+
+
+
+
+
+
+
+
+
+

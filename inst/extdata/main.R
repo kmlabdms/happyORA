@@ -21,10 +21,13 @@ col3 = c("#F8766D","#00BFC4")
 
 # happyORA output a plot and a table for overlapped genes.
 g1 = happyORA::happyORA(query_input = comb1, colors = col1)
-g2 = happyORA(comb2, colors = col2)
+g2 = happyORA(query_input = comb2, colors = col2)
 g3 = happyORA(comb3, colors = col3)
 # g2 plot is too tall so we split it
-g2_nohallmark = happyORA(comb2, col2, remove_genesets_group = "Hallmark")
+g2_nohallmark = happyORA::happyORA(comb2, col2,
+                                   group_labels = c(unique(comb2$cluster), "XXX"),
+                                   remove_genesets_group = "Hallmark",
+                                   visual_query_as_row = T)
 g2_nohallmark =  happyORA(comb2, col2, keep_genesets_group  = "Hallmark")
 
 # Output overlapped genes
@@ -53,6 +56,43 @@ g2 = happyORA(query_input = gene_group %>% filter(str_detect(cluster, "Panel")),
 )
 count(gene_group, cluster)
 
+
+
+## CCLE cell line driver genes
+
+cl_driver_path = "data-raw//gdsc/cell_line_genomic_feature_clean.rds"
+cl_driver_raw = read_rds(cl_driver_path) %>%
+  select(cl_id, is_mutated, gain_loss, genes)
+
+
+cl_mapping = read_csv("data-raw//gdsc/sample_info.csv") %>%
+  select(CCLE_Name, cl_id = COSMICID) %>%
+  filter(!grepl("Merged", CCLE_Name)) %>%
+  dplyr::rename(sample_id = CCLE_Name)
+
+cl_driver <-
+  cl_driver_raw %>%
+  left_join(cl_mapping) %>%
+  drop_na(sample_id) %>%
+  separate_rows(genes) %>%
+  select(sample_id, genes)
+
+q_samples = c("TGBC11TKB_STOMACH", "SNU216_STOMACH", "2313287_STOMACH", "SNU1_STOMACH", "SNU520_STOMACH", "FU97_STOMACH", "GSS_STOMACH", "MKN7_STOMACH", "MKN74_STOMACH", "NUGC2_STOMACH", "ECC12_STOMACH", "MKN45_STOMACH", "HGC27_STOMACH", "IM95_STOMACH", "KATOIII_STOMACH")
+
+
+
+q_signature =
+  cl_driver %>%
+  filter(sample_id %in% q_samples) %>%
+  rename(cluster = sample_id, gene_id = genes)
+
+
+ora_res = happyORA::happyORA(query_input = q_signature,
+                             group_labels = q_samples,
+                             remove_genesets_group = "Hallmark",
+                             visual_query_as_row = T)
+gsea_plot = ora_res$plot
+ht+gsea_plot
 
 
 

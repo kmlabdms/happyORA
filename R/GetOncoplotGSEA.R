@@ -38,7 +38,7 @@ GetOncoplotGSEA <- function(tbl_overlap,
 
   missing_group <- setdiff(group_labels, colnames(full))
   if (length(missing_group) > 0 ) {
-    full[[missing_group]] <- ""
+    full[missing_group] <- ""
   }
 
   mat <- column_to_rownames(full, "geneset")
