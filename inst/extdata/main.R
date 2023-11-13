@@ -91,8 +91,7 @@ ora_res = happyORA::happyORA(query_input = q_signature,
                              group_labels = q_samples,
                              remove_genesets_group = "Hallmark",
                              visual_query_as_row = T)
-gsea_plot = ora_res$plot
-ht+gsea_plot
+(gsea_plot = ora_res$plot)
 
 
 

@@ -50,17 +50,20 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
   } else {
     mat <- t(mat) # sample as rows
     mat <- mat[group_labels, ]
-    col_split <- tibble(geneset = colnames(mat)) %>% left_join(tbl_spl)
+    col_split <- tibble(geneset = colnames(mat)) %>% left_join(tbl_spl) %>%
+      mutate(type = str_wrap(type, 5))
     ht <- oncoPrint(mat,
                     alter_fun = alt_fun, show_pct = F,
-                    width = unit(5, "mm") * ncol(mat),
+                    width = unit(6, "mm") * ncol(mat),
                     height = unit(5, "mm") * nrow(mat),
                     row_names_gp = gpar(fontsize = 10, fontface = "bold"),
                     column_names_gp = gpar(fontsize = 10, fontface = "bold"),
-                    border = T, column_title_rot = 90,
+                    column_names_side = "top", column_names_rot = 45, column_title_side = "bottom",
+                    column_title_gp = gpar(fontsize = 10, fontface = "bold"),
+                    border = T,
                     row_order  = group_labels,
                     top_annotation =NULL, right_annotation = NULL,
-                    column_split = col_split[["type"]],
+                    column_split = col_split[["type"]],  column_title_rot = 0,
                     show_column_names = T,
                     heatmap_legend_param = list(title = name),
                     alter_fun_is_vectorized = FALSE)
