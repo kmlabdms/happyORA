@@ -1,5 +1,18 @@
-library(ComplexHeatmap)
 
+
+#' GetOncoplotGSEA
+#'
+#' @param tbl_overlap
+#' @param tbl_spl
+#' @param group_colors
+#' @param group_labels
+#' @param name
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 GetOncoplotGSEA <- function(tbl_overlap,
                             tbl_spl = NULL,
                             group_colors = c("tomato1", "limegreen", "blue"),

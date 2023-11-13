@@ -17,7 +17,7 @@ SimpleGSEA <- function(query_input, genesets_list, background = NULL, visual = T
   #geneset_type <- read_csv(paste0(dir, "data/gsea_data/geneset_type.csv"))
 
   gene_signautes <- genesets_list
-  if (is.null(background)) background <- readRDS("./data/gsea/gene_gw_all.rds")
+  # if (is.null(background)) background <- readRDS("./data/gsea/gene_gw_all.rds")
 
   # Main Func
   gses_result <- runCancerGSEA(

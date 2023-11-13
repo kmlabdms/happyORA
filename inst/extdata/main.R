@@ -1,8 +1,5 @@
 library(tidyverse)
-source("./R/SimpleGSEA.R")
-source("./R/gsea_functions.R")
-source("./R/GetOncoplotGSEA.R")
-source("./R/happyORA.R")
+library(ComplexHeatmap)
 
 
 # Process signatures ------------------------------------------------------
@@ -23,7 +20,7 @@ col3 = c("#F8766D","#00BFC4")
 
 
 # happyORA output a plot and a table for overlapped genes.
-g1 = happyORA(comb1, colors = col1)
+g1 = happyORA::happyORA(query_input = comb1, colors = col1)
 g2 = happyORA(comb2, colors = col2)
 g3 = happyORA(comb3, colors = col3)
 # g2 plot is too tall so we split it
@@ -33,4 +30,33 @@ g2_nohallmark =  happyORA(comb2, col2, keep_genesets_group  = "Hallmark")
 # Output overlapped genes
 list(comb1 = g1$tbl, comb2 = g2$tbl, comb3 = g3$tbl) %>%
   writexl::write_xlsx("output/overlapped_genes_3_comb.xlsx")
+
+
+cols_us= c("#7296B9", "#98276C", "#e29357", "#d76a9a","#F8766D","#00BFC4")
+gene_group = read_tsv("/Users/qixu/Github/mycmiecases/gene_to_gsea.tsv")
+g1 = happyORA(query_input = gene_group %>% filter(str_detect(cluster, "WGS")),
+              remove_genesets_group = c("Hallmark"),
+              colors = unlist(map(cols_us,~rep(.x, 1)))
+              )
+count(gene_group, cluster)
+
+
+cbio = cBioPortalData::cBioPortal()
+gene_fmi =
+  cBioPortalData::getGenePanel(cbio, "FoundationOne") %>%
+  pull(hugoGeneSymbol)
+
+g2 = happyORA(query_input = gene_group %>% filter(str_detect(cluster, "Panel")),
+              remove_genesets_group = c("Amplicon"),
+              background = gene_fmi,
+              colors = unlist(map(cols_us,~rep(.x, 1)))
+)
+count(gene_group, cluster)
+
+
+
+
+
+
+
 

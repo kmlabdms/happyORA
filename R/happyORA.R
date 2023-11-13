@@ -23,11 +23,16 @@ happyORA <- function(query_input,
 
 
   if (is.null(background)) {
-    background <- readRDS("./data/gsea/gene_gw_all.rds")
+    background <- gene_gw
+  }
+
+  if (length(unique( query_input[[1]])) > length(colors)) {
+    colors = rep(colors[1], length(unique( query_input[[1]])))
   }
 
   # database Prep -----------------------------------------------------------
-  geneset_type_all <- readxl::read_xlsx("data/gsea/ref_genesets_230418.xlsx",sheet = "ref_genesets_230327_all")
+  # geneset_type_all <-
+  #   readxl::read_xlsx("data/gsea/ref_genesets_230418.xlsx",sheet = "ref_genesets_230327_all")
   group_list <- geneset_type_all %>% split(.,.$type) %>% map(~pull(.x, geneset))
   genesets <-
     geneset_type_all %>%
@@ -57,7 +62,7 @@ happyORA <- function(query_input,
   tbl_overlap$type <- factor(tbl_overlap$type,
                              levels = str_sort(unique(query_input$cluster), numeric = T))
   group_labels = str_sort(unique(query_input$cluster), numeric = T)
-  ht = GetOncoplotGSEA(tbl_overlap,
+  ht = GetOncoplotGSEA(tbl_overlap = tbl_overlap,
                        tbl_spl =  geneset_type,
                        group_colors = colors,
                        group_labels =  group_labels,
