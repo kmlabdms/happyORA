@@ -10,6 +10,7 @@
 #' @param ...
 #'
 #' @return
+#' @import ComplexHeatmap
 #' @export
 #'
 #' @examples
