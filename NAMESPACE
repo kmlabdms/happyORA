@@ -3,5 +3,7 @@
 export(GetOncoplotGSEA)
 export(SimpleGSEA)
 export(happyORA)
+import(ComplexHeatmap)
+importFrom(ComplexHeatmap,Heatmap)
 importFrom(dplyr,rename)
 importFrom(ggplot2,ggplot)

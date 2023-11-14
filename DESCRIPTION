@@ -15,4 +15,6 @@ RoxygenNote: 7.2.3
 Imports: 
     dplyr,
     ggplot2,
-    readr
+    readr,
+    ComplexHeatmap,
+    magrittr
