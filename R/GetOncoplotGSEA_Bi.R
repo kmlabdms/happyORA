@@ -1,3 +1,18 @@
+#' GetOncoplotGSEA_Bi
+#'
+#' @param tbl_overlap
+#' @param tbl_spl
+#' @param group_colors
+#' @param group_labels
+#' @param name
+#' @param visual_query_as_row
+#' @param ...
+#'
+#' @return
+#' @importFrom ComplexHeatmap alter_graphic oncoPrint
+#' @export
+#'
+#' @examples
 GetOncoplotGSEA_Bi <- function(tbl_overlap,
                             tbl_spl = NULL,
                             group_colors = c("tomato1", "limegreen", "blue"),
@@ -38,8 +53,8 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
                     column_order = group_labels,
                     width = unit(5, "mm") * ncol(mat),
                     height = unit(5, "mm") * nrow(mat),
-                    row_names_gp = gpar(fontsize = 10, fontface = "bold"),
-                    column_names_gp = gpar(fontsize = 10, fontface = "bold"),
+                    row_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
+                    column_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
                     #row_gap = unit(5, "mm"),
                     border = T, column_names_rot = 90,
                     top_annotation =NULL, right_annotation = NULL,
@@ -56,10 +71,10 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
                     alter_fun = alt_fun, show_pct = F,
                     width = unit(6, "mm") * ncol(mat),
                     height = unit(5, "mm") * nrow(mat),
-                    row_names_gp = gpar(fontsize = 10, fontface = "bold"),
-                    column_names_gp = gpar(fontsize = 10, fontface = "bold"),
-                    column_names_side = "top", column_names_rot = 45, column_title_side = "bottom",
-                    column_title_gp = gpar(fontsize = 10, fontface = "bold"),
+                    row_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
+                    column_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
+
+                    column_title_gp = grid::gpar(fontsize = 10, fontface = "bold"),
                     border = T,
                     row_order  = group_labels,
                     top_annotation =NULL, right_annotation = NULL,

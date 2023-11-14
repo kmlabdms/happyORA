@@ -1,7 +1,7 @@
 Package: happyORA
 Type: Package
 Title: Perform enrichment analysis
-Version: 0.1.2
+Version: 0.1.3
 Author: Qi Xu
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
@@ -17,4 +17,5 @@ Imports:
     ggplot2,
     readr,
     ComplexHeatmap,
-    magrittr
+    magrittr,
+    grid

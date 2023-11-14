@@ -61,12 +61,12 @@ count(gene_group, cluster)
 ## CCLE cell line driver genes
 
 cl_driver_path = "data-raw//gdsc/cell_line_genomic_feature_clean.rds"
-cl_driver_raw = read_rds(cl_driver_path) %>%
-  select(cl_id, is_mutated, gain_loss, genes)
+cl_driver_raw = readRDS(cl_driver_path) %>%
+  dplyr::select(cl_id, is_mutated, gain_loss, genes)
 
 
 cl_mapping = read_csv("data-raw//gdsc/sample_info.csv") %>%
-  select(CCLE_Name, cl_id = COSMICID) %>%
+  dplyr::select(CCLE_Name, cl_id = COSMICID) %>%
   filter(!grepl("Merged", CCLE_Name)) %>%
   dplyr::rename(sample_id = CCLE_Name)
 
