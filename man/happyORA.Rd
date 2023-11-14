@@ -10,7 +10,9 @@ happyORA(
   remove_genesets_group = NULL,
   keep_genesets_group = NULL,
   background = NULL,
-  p_cut = 0.05
+  p_cut = 0.05,
+  group_labels = NULL,
+  visual_query_as_row = F
 )
 }
 \arguments{
