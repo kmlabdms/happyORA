@@ -1,4 +1,3 @@
-library(patchwork)
 dir <- "./"
 
 # base GSEA function ----
@@ -318,8 +317,8 @@ mainGSEA <- function(query_genes, background_genes, pvaluecut = 0.2,
                      maintitle = NULL
                      ) {
   
-  geneset_type <- read_csv(paste0(dir, "data/gsea_data/geneset_type.csv"))
-  gene_signautes <- readRDS(paste0(dir, "data/gsea_data/ma_list_211116.rds"))
+  geneset_type <- read_csv("data/gsea_data/geneset_type.csv")
+  gene_signautes <- readRDS("data/gsea_data/ma_list_211116.rds")
   
   
   if (add_total == TRUE) {
