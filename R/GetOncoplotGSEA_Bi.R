@@ -19,6 +19,8 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
                             group_labels = NULL,
                             name = "p<0.05",
                             visual_query_as_row = F,
+                            cluster_row = T,
+                            n_row_clusters = 3,
                             ...){
 
 
@@ -60,11 +62,28 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
                     top_annotation =NULL, right_annotation = NULL,
                     row_split = row_split[["type"]],  row_title_rot = 0,
                     heatmap_legend_param = list(title = name),
-                    alter_fun_is_vectorized = FALSE,
-                    ...)
+                    alter_fun_is_vectorized = FALSE)
   } else {
     mat <- t(mat) # sample as rows
     mat <- mat[group_labels, ]
+
+    bimat = mat
+    bimat[bimat!=""] = 1
+    bimat[bimat==""] = 0
+    bimat = bimat %>% as_tibble(rownames = "sample_id") %>%
+      mutate(across(2:dplyr::last_col(), ~as.numeric(.x))) %>%
+      column_to_rownames("sample_id")
+
+    if (cluster_row) {
+      kclust = kmeans(bimat, center = n_row_clusters)
+      dt = tibble(sample_id =  names(kclust$cluster),
+                  row_cluster = paste0("C", kclust$cluster))
+      row_split = tibble(sample_id = rownames(mat)) %>% left_join(dt)
+    } else {
+      row_split = NULL
+    }
+
+
     col_split <- tibble(geneset = colnames(mat)) %>% left_join(tbl_spl) %>%
       mutate(type = str_wrap(type, 5))
     ht <- oncoPrint(mat,
@@ -73,12 +92,12 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
                     height = unit(5, "mm") * nrow(mat),
                     row_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
                     column_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
-
                     column_title_gp = grid::gpar(fontsize = 10, fontface = "bold"),
                     border = T,
                     row_order  = group_labels,
                     top_annotation =NULL, right_annotation = NULL,
                     column_split = col_split[["type"]],  column_title_rot = 0,
+                    row_split = row_split$row_cluster,
                     show_column_names = T,
                     heatmap_legend_param = list(title = name),
                     alter_fun_is_vectorized = FALSE)
