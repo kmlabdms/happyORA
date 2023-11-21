@@ -20,14 +20,18 @@ happyORA <- function(query_input,
                          background = NULL,
                          p_cut = 0.05,
                      group_labels = NULL,
-                     visual_query_as_row = F
+                     visual_query_as_row = F,
+                     cluster_row = F,
+                     n_row_clusters = 3
                          ){
 
   # for testing only
-  # remove_genesets_group = NULL
-  # keep_genesets_group = NULL
   # background = NULL
   # p_cut = 0.05
+  # query_input = q_signature
+  # group_labels = q_samples
+  # remove_genesets_group = "Hallmark"
+  # visual_query_as_row = T
 
   if (is.null(background)) {
     background <- gene_gw
@@ -77,6 +81,8 @@ happyORA <- function(query_input,
     group_colors = colors,
     group_labels =  group_labels,
     show_column_names= T,
+    cluster_row = cluster_row,
+    n_row_clusters = n_row_clusters,
     visual_query_as_row = visual_query_as_row,
     name = sprintf("p<%s", p_cut)
                        )
