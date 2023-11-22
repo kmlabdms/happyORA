@@ -21,6 +21,7 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
                             visual_query_as_row = F,
                             cluster_row = T,
                             n_row_clusters = 3,
+                            row_split_data = NULL,
                             ...){
 
 
@@ -53,8 +54,8 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
     ht <- oncoPrint(mat,
                     alter_fun = alt_fun, show_pct = F,
                     column_order = group_labels,
-                    width = unit(5, "mm") * ncol(mat),
-                    height = unit(5, "mm") * nrow(mat),
+                    width = unit(4, "mm") * ncol(mat),
+                    height = unit(4, "mm") * nrow(mat),
                     row_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
                     column_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
                     #row_gap = unit(5, "mm"),
@@ -75,10 +76,13 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
       column_to_rownames("sample_id")
 
     if (cluster_row) {
+      set.seed(123)
       kclust = kmeans(bimat, center = n_row_clusters)
       dt = tibble(sample_id =  names(kclust$cluster),
-                  row_cluster = paste0("C", kclust$cluster))
+                  group = paste0("C", kclust$cluster))
       row_split = tibble(sample_id = rownames(mat)) %>% left_join(dt)
+    } else if (!is.null(row_split_data))  {
+      row_split = tibble(sample_id = rownames(mat)) %>% left_join(row_split_data)
     } else {
       row_split = NULL
     }
@@ -88,8 +92,8 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
       mutate(type = str_wrap(type, 5))
     ht <- oncoPrint(mat,
                     alter_fun = alt_fun, show_pct = F,
-                    width = unit(6, "mm") * ncol(mat),
-                    height = unit(5, "mm") * nrow(mat),
+                    width = unit(4, "mm") * ncol(mat),
+                    height = unit(4, "mm") * nrow(mat),
                     row_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
                     column_names_gp = grid::gpar(fontsize = 10, fontface = "bold"),
                     column_title_gp = grid::gpar(fontsize = 10, fontface = "bold"),
@@ -97,7 +101,7 @@ GetOncoplotGSEA_Bi <- function(tbl_overlap,
                     row_order  = group_labels,
                     top_annotation =NULL, right_annotation = NULL,
                     column_split = col_split[["type"]],  column_title_rot = 0,
-                    row_split = row_split$row_cluster,
+                    row_split = row_split$group,
                     show_column_names = T,
                     heatmap_legend_param = list(title = name),
                     alter_fun_is_vectorized = FALSE)

@@ -22,7 +22,8 @@ happyORA <- function(query_input,
                      group_labels = NULL,
                      visual_query_as_row = F,
                      cluster_row = F,
-                     n_row_clusters = 3
+                     n_row_clusters = 3,
+                     row_split_data = NULL
                          ){
 
   # for testing only
@@ -84,7 +85,8 @@ happyORA <- function(query_input,
     cluster_row = cluster_row,
     n_row_clusters = n_row_clusters,
     visual_query_as_row = visual_query_as_row,
-    name = sprintf("p<%s", p_cut)
+    name = sprintf("p<%s", p_cut),
+    row_split_data = row_split_data
                        )
 
   return(list(plot = ht, tbl = tbl_overlap))

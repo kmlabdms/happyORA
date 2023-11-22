@@ -1,7 +1,7 @@
 Package: happyORA
 Type: Package
 Title: Perform enrichment analysis
-Version: 0.1.6
+Version: 0.1.7
 Author: Qi Xu
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
